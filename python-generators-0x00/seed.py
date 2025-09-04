@@ -67,29 +67,24 @@ def insert_data(connection, csv_file):
     """Insert data from CSV file if not already inserted."""
     try:
         cursor = connection.cursor()
-
         with open(csv_file, mode="r", encoding="utf-8") as file:
             reader = csv.DictReader(file)
-
             for row in reader:
-                # Generate UUID since CSV has no user_id
                 user_id = str(uuid.uuid4())
                 name = row["name"]
                 email = row["email"]
                 age = row["age"]
 
-                # Check if email already exists (avoid duplicates)
+                # Avoid duplicate emails
                 cursor.execute("SELECT * FROM user_data WHERE email = %s", (email,))
                 if cursor.fetchone():
                     continue
 
-                cursor.execute("""
-                    INSERT INTO user_data (user_id, name, email, age)
-                    VALUES (%s, %s, %s, %s);
-                """, (user_id, name, email, age))
-
+                cursor.execute(
+                    "INSERT INTO user_data (user_id, name, email, age) VALUES (%s, %s, %s, %s);",
+                    (user_id, name, email, age)
+                )
         connection.commit()
-        print("Data inserted successfully")
-    except Error as e:
+        cursor.close()
+    except mysql.connector.Error as e:
         print(f"Error inserting data: {e}")
-
