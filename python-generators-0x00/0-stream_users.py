@@ -5,23 +5,26 @@ Generator that streams rows from user_data table one by one.
 """
 
 import mysql.connector
-
+from mysql.connector import Error
 
 def stream_users():
-    """Generator that yields users from the database one by one"""
-    # connect to DB
-    conn = mysql.connector.connect(
-        host="localhost",
-        user="root",        # change if needed
-        password="Password6$",  # change if needed
-        database="ALX_prodev"
-    )
-    cursor = conn.cursor(dictionary=True)  # return rows as dicts
+    """Generator that fetches rows from user_data one by one."""
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",         # update if needed
+            password="Password6$",
+            database="ALX_prodev"
+        )
 
-    cursor.execute("SELECT * FROM user_data")
+        cursor = connection.cursor(dictionary=True)  # dictionary=True gives dict instead of tuple
+        cursor.execute("SELECT * FROM user_data;")
 
-    for row in cursor:  # only one loop
-        yield row  # generator yields one row at a time
+        for row in cursor:
+            yield row  # yields one row at a time
 
-    cursor.close()
-    conn.close()
+        cursor.close()
+        connection.close()
+
+    except Error as e:
+        print(f"Error while streaming users: {e}")

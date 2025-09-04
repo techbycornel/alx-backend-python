@@ -1,74 +1,66 @@
 #!/usr/bin/python3
+import uuid
+
 """
-Seed script for ALX_prodev database
-- Connects to MySQL
-- Creates database if not exists
-- Creates user_data table if not exists
-- Inserts CSV data if not already present
+seed.py
+Setup script for ALX_prodev database and user_data table.
 """
 
 import mysql.connector
-from mysql.connector import Error
 import csv
-import uuid
 
 
 def connect_db():
-    """Connect to MySQL server (no specific database yet)."""
-    try:
-        connection = mysql.connector.connect(
-            host="localhost",   # adjust if needed
-            user="root",        # replace with your MySQL username
-            password="Password6$" # replace with your MySQL password
-        )
-        if connection.is_connected():
-            return connection
-    except Error as e:
-        print(f"Error while connecting to MySQL: {e}")
-    return None
-
-
-def create_database(connection):
-    """Create ALX_prodev database if not exists."""
-    try:
-        cursor = connection.cursor()
-        cursor.execute("CREATE DATABASE IF NOT EXISTS ALX_prodev;")
-        print("Database ALX_prodev checked/created successfully")
-    except Error as e:
-        print(f"Error creating database: {e}")
-
-
-def connect_to_prodev():
-    """Connect directly to ALX_prodev database."""
+    """Connects to the MySQL server (not a specific DB)."""
     try:
         connection = mysql.connector.connect(
             host="localhost",
-            user="root",        # replace with your MySQL username
-            password="Password6$",# replace with your MySQL password
+            user="root",          # <-- update if needed
+            password="Password6$"   # <-- update if needed
+        )
+        return connection
+    except mysql.connector.Error as err:
+        print(f"Error while connecting: {err}")
+        return None
+
+
+def create_database(connection):
+    """Creates ALX_prodev database if it doesn’t exist."""
+    cursor = connection.cursor()
+    cursor.execute("CREATE DATABASE IF NOT EXISTS ALX_prodev;")
+    cursor.close()
+
+
+def connect_to_prodev():
+    """Connects directly to ALX_prodev database."""
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",          # <-- update if needed
+            password="Password6$",  # <-- update if needed
             database="ALX_prodev"
         )
-        if connection.is_connected():
-            return connection
-    except Error as e:
-        print(f"Error while connecting to ALX_prodev: {e}")
-    return None
+        return connection
+    except mysql.connector.Error as err:
+        print(f"Error while connecting to ALX_prodev: {err}")
+        return None
 
 
 def create_table(connection):
-    """Create user_data table if not exists."""
-    try:
-        cursor = connection.cursor()
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS user_data (
-                user_id VARCHAR(36) PRIMARY KEY,
-                name VARCHAR(255) NOT NULL,
-                email VARCHAR(255) NOT NULL,
-                age DECIMAL NOT NULL
-            );
-        """)
-        print("Table user_data created successfully")
-    except Error as e:
-        print(f"Error creating table: {e}")
+    """Creates user_data table if not exists."""
+    cursor = connection.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS user_data (
+            user_id VARCHAR(36) PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            email VARCHAR(255) NOT NULL,
+            age DECIMAL NOT NULL,
+            INDEX(user_id)
+        );
+    """)
+    connection.commit()
+    print("Table user_data created successfully")
+    cursor.close()
 
 
 def insert_data(connection, csv_file):
@@ -80,7 +72,7 @@ def insert_data(connection, csv_file):
             reader = csv.DictReader(file)
 
             for row in reader:
-                # Generate UUID if not provided in CSV
+                # Generate UUID since CSV has no user_id
                 user_id = str(uuid.uuid4())
                 name = row["name"]
                 email = row["email"]
@@ -100,3 +92,4 @@ def insert_data(connection, csv_file):
         print("Data inserted successfully")
     except Error as e:
         print(f"Error inserting data: {e}")
+
