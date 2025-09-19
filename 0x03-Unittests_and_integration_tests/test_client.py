@@ -10,12 +10,15 @@ from unittest.mock import patch, PropertyMock
 
 
 class TestGithubOrgClient(unittest.TestCase):
+    """Unit tests for the GithubOrgClient class."""
+
     @parameterized.expand([
         ("google",),
         ("abc",)
     ])
-    @patch("client.get_json")  # <--- patch here, not utils.get_json
+    @patch("client.get_json")
     def test_org(self, org_name, mock_get_json):
+        """Test that the org property returns the correct payload."""
         expected_payload = {"login": org_name}
         mock_get_json.return_value = expected_payload
 
@@ -27,9 +30,9 @@ class TestGithubOrgClient(unittest.TestCase):
         )
         self.assertEqual(result, expected_payload)
 
-    @patch("client.get_json")  # <--- patch here as well
+    @patch("client.get_json")
     def test_public_repos(self, mock_get_json):
-        """Test that public_repos returns list of repo names"""
+        """Test that public_repos returns list of repo names."""
         mock_get_json.return_value = [
             {"name": "repo1"},
             {"name": "repo2"}
@@ -54,13 +57,14 @@ class TestGithubOrgClient(unittest.TestCase):
         ({"license": {"key": "other_license"}}, "my_license", False),
     ])
     def test_has_license(self, repo, license_key, expected):
+        """Test that has_license correctly identifies licenses."""
         client = GithubOrgClient("test_org")
         result = client.has_license(repo, license_key)
         self.assertEqual(result, expected)
 
     @patch("client.get_json")
     def test_public_repos_url(self, mock_get_json):
-        """Test that public_repos returns list of repo names"""
+        """Test that public_repos URL is accessed correctly."""
         mock_get_json.return_value = [
             {"name": "repo1"},
             {"name": "repo2"}
@@ -79,6 +83,7 @@ class TestGithubOrgClient(unittest.TestCase):
             mock_get_json.assert_called_once_with(
                 "https://api.github.com/orgs/test_org/repos"
             )
+
 
 if __name__ == "__main__":
     unittest.main()
