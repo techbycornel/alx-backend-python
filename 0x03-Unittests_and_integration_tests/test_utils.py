@@ -1,40 +1,24 @@
 #!/usr/bin/env python3
 """
-Unit tests for client.GithubOrgClient
+Unit tests for utils.access_nested_map
 """
 
 import unittest
-from unittest.mock import patch, Mock
 from parameterized import parameterized
-from client import GithubOrgClient
+from utils import access_nested_map
 
 
-class TestGithubOrgClient(unittest.TestCase):
-    """Test case for GithubOrgClient"""
+class TestAccessNestedMap(unittest.TestCase):
+    """Test case for the access_nested_map function"""
 
     @parameterized.expand([
-        ("google",),
-        ("abc",),
+        ({"a": 1}, ("a",), 1),
+        ({"a": {"b": 2}}, ("a",), {"b": 2}),
+        ({"a": {"b": 2}}, ("a", "b"), 2),
     ])
-    @patch("client.get_json")
-    def test_org(self, org_name, mock_get_json):
-        """Test that GithubOrgClient.org returns the expected value"""
-
-        # Setup mock return value
-        expected_payload = {"login": org_name}
-        mock_get_json.return_value = expected_payload
-
-        # Create client instance
-        client = GithubOrgClient(org_name)
-
-        # Call org method
-        result = client.org
-
-        # Assertions
-        mock_get_json.assert_called_once_with(
-            f"https://api.github.com/orgs/{org_name}"
-        )
-        self.assertEqual(result, expected_payload)
+    def test_access_nested_map(self, nested_map, path, expected):
+        """Test access_nested_map returns expected results"""
+        self.assertEqual(access_nested_map(nested_map, path), expected)
 
 
 if __name__ == "__main__":
