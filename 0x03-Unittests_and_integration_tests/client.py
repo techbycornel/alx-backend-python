@@ -2,7 +2,7 @@
 """Module for GithubOrgClient"""
 
 from typing import Any, Dict
-from utils import get_json
+from utils import get_json  # note the dot for relative import
 
 
 class GithubOrgClient:
