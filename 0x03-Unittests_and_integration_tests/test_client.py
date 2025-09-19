@@ -10,10 +10,12 @@ from unittest.mock import patch, PropertyMock
 
 
 
-class TestGithubOrgClientOrg(unittest.TestCase):
-
-    @parameterized.expand([("google",), ("abc",)])
-    @patch("client.get_json")
+class TestGithubOrgClient(unittest.TestCase):
+    @parameterized.expand([
+        ("google",),
+        ("abc",)
+    ])
+    @patch("utils.get_json")
     def test_org(self, org_name, mock_get_json):
         expected_payload = {"login": org_name}
         mock_get_json.return_value = expected_payload
@@ -25,6 +27,7 @@ class TestGithubOrgClientOrg(unittest.TestCase):
             f"https://api.github.com/orgs/{org_name}"
         )
         self.assertEqual(result, expected_payload)
+
 
 class TestGithubOrgClientRepos(unittest.TestCase):
 
