@@ -6,7 +6,7 @@ Unit tests for utils functions
 import unittest
 from unittest.mock import patch, Mock
 from parameterized import parameterized
-from utils import access_nested_map, get_json
+from utils import access_nested_map, get_json, memoize
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -42,17 +42,15 @@ class TestGetJson(unittest.TestCase):
     @patch("utils.requests.get")
     def test_get_json(self, test_url, test_payload, mock_get):
         """Test get_json returns expected payload"""
-        # Setup mock
         mock_resp = Mock()
         mock_resp.json.return_value = test_payload
         mock_get.return_value = mock_resp
 
-        # Call the function
         result = get_json(test_url)
 
-        # Assertions
         mock_get.assert_called_once_with(test_url)
         self.assertEqual(result, test_payload)
+
 
 class TestMemoize(unittest.TestCase):
     """Test case for utils.memoize decorator"""
@@ -73,17 +71,13 @@ class TestMemoize(unittest.TestCase):
         obj = TestClass()
 
         with patch.object(obj, "a_method", return_value=42) as mock_method:
-            # Call a_property twice
             result1 = obj.a_property
             result2 = obj.a_property
 
-            # Check results
             self.assertEqual(result1, 42)
             self.assertEqual(result2, 42)
 
-            # a_method should only be called once
             mock_method.assert_called_once()
-
 
 
 if __name__ == "__main__":
