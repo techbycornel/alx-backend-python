@@ -9,7 +9,6 @@ from client import GithubOrgClient
 from unittest.mock import patch, PropertyMock
 
 
-
 class TestGithubOrgClient(unittest.TestCase):
     @parameterized.expand([
         ("google",),
@@ -28,9 +27,7 @@ class TestGithubOrgClient(unittest.TestCase):
         )
         self.assertEqual(result, expected_payload)
 
-
-class TestGithubOrgClient(unittest.TestCase):
-    @patch("client.get_json")
+    @patch("utils.get_json")
     def test_public_repos(self, mock_get_json):
         """Test that public_repos returns list of repo names"""
         mock_get_json.return_value = [
@@ -52,7 +49,6 @@ class TestGithubOrgClient(unittest.TestCase):
                 "https://api.github.com/orgs/test_org/repos"
             )
 
-class TestGithubOrgClient(unittest.TestCase):
     @parameterized.expand([
         ({"license": {"key": "my_license"}}, "my_license", True),
         ({"license": {"key": "other_license"}}, "my_license", False),
