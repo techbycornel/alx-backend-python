@@ -14,7 +14,7 @@ class TestGithubOrgClient(unittest.TestCase):
         ("google",),
         ("abc",)
     ])
-    @patch("utils.get_json")
+    @patch("client.get_json")  # <--- patch here, not utils.get_json
     def test_org(self, org_name, mock_get_json):
         expected_payload = {"login": org_name}
         mock_get_json.return_value = expected_payload
@@ -27,7 +27,7 @@ class TestGithubOrgClient(unittest.TestCase):
         )
         self.assertEqual(result, expected_payload)
 
-    @patch("utils.get_json")
+    @patch("client.get_json")  # <--- patch here as well
     def test_public_repos(self, mock_get_json):
         """Test that public_repos returns list of repo names"""
         mock_get_json.return_value = [
