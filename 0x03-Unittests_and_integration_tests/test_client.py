@@ -52,7 +52,7 @@ class TestGithubOrgClient(unittest.TestCase):
                 "https://api.github.com/orgs/test_org/repos"
             )
 
-class TestGithubOrgClientHasLicense(unittest.TestCase):
+class TestGithubOrgClient(unittest.TestCase):
     @parameterized.expand([
         ({"license": {"key": "my_license"}}, "my_license", True),
         ({"license": {"key": "other_license"}}, "my_license", False),
