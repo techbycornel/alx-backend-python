@@ -3,7 +3,7 @@
 Fixtures for unit and integration tests
 """
 
-org_payload = [{"login": "test_org"}]
+org_payload = {"login": "test_org"}
 repos_payload = [
     {"name": "repo1", "license": {"key": "apache-2.0"}},
     {"name": "repo2", "license": {"key": "mit"}},
