@@ -5,7 +5,7 @@ Unit and Integration tests for client module
 
 import unittest
 from parameterized import parameterized, parameterized_class
-from client import GithubOrgClient
+from .client import GithubOrgClient
 from unittest.mock import patch, PropertyMock
 from .fixtures import org_payload, repos_payload, expected_repos, apache2_repos
 
