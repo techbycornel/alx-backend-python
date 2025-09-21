@@ -39,9 +39,7 @@ class TestGithubOrgClient(unittest.TestCase):
         with patch.object(
             GithubOrgClient, "_public_repos_url", new_callable=PropertyMock
         ) as mock_url:
-            mock_url.return_value = (
-                "https://api.github.com/orgs/test_org/repos"
-            )
+            mock_url.return_value = "https://api.github.com/orgs/test_org/repos"
             client = GithubOrgClient("test_org")
             repos = client.public_repos()
             self.assertEqual(repos, ["repo1", "repo2"])
@@ -55,14 +53,9 @@ class TestGithubOrgClient(unittest.TestCase):
         with patch.object(
             GithubOrgClient, "org", new_callable=PropertyMock
         ) as mock_org:
-            mock_org.return_value = {
-                "repos_url": "https://api.github.com/orgs/test_org/repos"
-            }
+            mock_org.return_value = {"repos_url": "https://api.github.com/orgs/test_org/repos"}
             client = GithubOrgClient("test_org")
-            self.assertEqual(
-                client._public_repos_url,
-                "https://api.github.com/orgs/test_org/repos"
-            )
+            self.assertEqual(client._public_repos_url, "https://api.github.com/orgs/test_org/repos")
 
     @parameterized.expand([
         ({"license": {"key": "my_license"}}, "my_license", True),
@@ -71,11 +64,10 @@ class TestGithubOrgClient(unittest.TestCase):
     def test_has_license(self, repo, license_key, expected):
         """Test has_license method"""
         client = GithubOrgClient("test_org")
-        result = client.has_license(repo, license_key)
-        self.assertEqual(result, expected)
+        self.assertEqual(client.has_license(repo, license_key), expected)
 
 
-@parameterized_class([  # Use square brackets here
+@parameterized_class([
     {
         "org_payload": org_payload,
         "repos_payload": repos_payload,
@@ -127,10 +119,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     def test_public_repos_with_license(self):
         """Integration test for public_repos with license filter"""
         client = GithubOrgClient(self.org_payload["login"])
-        self.assertEqual(
-            client.public_repos(license_key="apache-2.0"),
-            self.apache2_repos
-        )
+        self.assertEqual(client.public_repos(license_key="apache-2.0"), self.apache2_repos)
 
 
 if __name__ == "__main__":
