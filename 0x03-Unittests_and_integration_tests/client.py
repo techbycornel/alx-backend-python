@@ -24,21 +24,21 @@ class GithubOrgClient:
         """Return the public repos URL"""
         return self.org.get("repos_url")
 
-    def public_repos(self, license=None):
-        """List public repos"""
+    def public_repos(self, license_key=None):
+        """List public repos, optionally filtered by license"""
         repos = get_json(self._public_repos_url)
         repo_names = [repo["name"] for repo in repos]
-        if license is None:
+        if license_key is None:
             return repo_names
         return [
             repo["name"]
             for repo in repos
-            if self.has_license(repo, license)
+            if self.has_license(repo, license_key)
         ]
 
     @staticmethod
     def has_license(repo, license_key):
-        """Check if repo has license"""
+        """Check if repo has given license"""
         try:
             return repo["license"]["key"] == license_key
         except (KeyError, TypeError):

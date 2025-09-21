@@ -51,10 +51,14 @@ class TestGithubOrgClient(unittest.TestCase):
         with patch.object(
             GithubOrgClient, "org", new_callable=PropertyMock
         ) as mock_org:
-            mock_org.return_value = {"repos_url": "https://api.github.com/orgs/test_org/repos"}
+            mock_org.return_value = {
+                "repos_url": "https://api.github.com/orgs/test_org/repos"
+            }
             client = GithubOrgClient("test_org")
-            self.assertEqual(client._public_repos_url,
-                             "https://api.github.com/orgs/test_org/repos")
+            self.assertEqual(
+                client._public_repos_url,
+                "https://api.github.com/orgs/test_org/repos"
+            )
 
     @parameterized.expand([
         ({"license": {"key": "my_license"}}, "my_license", True),
@@ -93,6 +97,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
                 def __init__(self, json_data, status_code=200):
                     self._json_data = json_data
                     self.status_code = status_code
+
                 def json(self):
                     return self._json_data
 
