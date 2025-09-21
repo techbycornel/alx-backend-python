@@ -48,7 +48,11 @@ class TestGetJson(unittest.TestCase):
 
         result = get_json(test_url)
 
-        mock_get.assert_called_once_with(test_url)
+        mock_get.assert_called_once_with(
+            "https://api.github.com/orgs/my_org/repos",
+            headers={"Authorization": "token fake"}
+        )
+
         self.assertEqual(result, test_payload)
 
 
