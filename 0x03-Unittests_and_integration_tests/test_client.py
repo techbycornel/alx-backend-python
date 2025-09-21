@@ -5,9 +5,9 @@ Unit and Integration tests for client module
 
 import unittest
 from parameterized import parameterized, parameterized_class
-from .client import GithubOrgClient
 from unittest.mock import patch, PropertyMock
-from .fixtures import org_payload, repos_payload, expected_repos, apache2_repos
+from client import GithubOrgClient
+from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -75,14 +75,14 @@ class TestGithubOrgClient(unittest.TestCase):
         self.assertEqual(result, expected)
 
 
-@parameterized_class((
+@parameterized_class([  # Use square brackets here
     {
         "org_payload": org_payload,
         "repos_payload": repos_payload,
         "expected_repos": expected_repos,
         "apache2_repos": apache2_repos
-    },
-))
+    }
+])
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     """Integration tests for GithubOrgClient.public_repos."""
 
