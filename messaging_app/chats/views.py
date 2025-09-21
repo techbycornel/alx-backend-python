@@ -9,7 +9,8 @@ from .serializers import ConversationSerializer, MessageSerializer
 class ConversationViewSet(viewsets.ModelViewSet):
     queryset = Conversation.objects.all()
     serializer_class = ConversationSerializer
-    permission_classes = [IsAuthenticated]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title', 'participants__username']
 
     def create(self, request, *args, **kwargs):
         """Custom create to start a new conversation with participants."""
@@ -28,7 +29,8 @@ class ConversationViewSet(viewsets.ModelViewSet):
 class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
-    permission_classes = [IsAuthenticated]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['content', 'sender__username']
 
     def create(self, request, *args, **kwargs):
         """Send a message inside an existing conversation."""
