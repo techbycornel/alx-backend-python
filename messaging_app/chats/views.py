@@ -1,7 +1,4 @@
-from rest_framework import viewsets, status
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-
+from rest_framework import viewsets, filters
 from .models import Conversation, Message
 from .serializers import ConversationSerializer, MessageSerializer
 
@@ -10,36 +7,11 @@ class ConversationViewSet(viewsets.ModelViewSet):
     queryset = Conversation.objects.all()
     serializer_class = ConversationSerializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ['title', 'participants__username']
-
-    def create(self, request, *args, **kwargs):
-        """Custom create to start a new conversation with participants."""
-        participants = request.data.get("participants", [])
-        if not participants:
-            return Response({"error": "Participants are required"}, status=status.HTTP_400_BAD_REQUEST)
-
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        conversation = serializer.save()
-        conversation.participants.set(participants)
-
-        return Response(self.get_serializer(conversation).data, status=status.HTTP_201_CREATED)
+    search_fields = ['title']
 
 
 class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ['content', 'sender__username']
-
-    def create(self, request, *args, **kwargs):
-        """Send a message inside an existing conversation."""
-        conversation_id = request.data.get("conversation")
-        if not conversation_id:
-            return Response({"error": "Conversation ID is required"}, status=status.HTTP_400_BAD_REQUEST)
-
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        message = serializer.save(sender=request.user)
-
-        return Response(self.get_serializer(message).data, status=status.HTTP_201_CREATED)
+    search_fields = ['content']
