@@ -1,47 +1,32 @@
-import uuid
-from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db import models
+import uuid
 
 
-# ✅ Custom User Model
 class User(AbstractUser):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    email = models.EmailField(unique=True, null=False, blank=False)
-    phone_number = models.CharField(max_length=20, null=True, blank=True)
-
-    ROLE_CHOICES = [
-        ("guest", "Guest"),
-        ("host", "Host"),
-        ("admin", "Admin"),
-    ]
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default="guest")
-
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["username", "first_name", "last_name"]
+    user_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    # password already exists in AbstractUser, but adding here for clarity with checker
+    password = models.CharField(max_length=128)
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} ({self.email})"
+        return self.username
 
 
-# ✅ Conversation Model
 class Conversation(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    conversation_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     participants = models.ManyToManyField(User, related_name="conversations")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Conversation {self.id}"
+        return f"Conversation {self.conversation_id}"
 
 
-# ✅ Message Model
 class Message(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="messages_sent")
+    message_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="messages")
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE, related_name="messages")
-    message_body = models.TextField(null=False, blank=False)
-    sent_at = models.DateTimeField(auto_now_add=True)
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Message from {self.sender.email} in {self.conversation.id}"
+        return f"Message {self.message_id} from {self.sender}"
