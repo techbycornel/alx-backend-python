@@ -55,6 +55,7 @@ REST_FRAMEWORK = {
     ],
 }
 
+AUTH_USER_MODEL = "chats.User"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
