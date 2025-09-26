@@ -4,23 +4,26 @@ from rest_framework.permissions import BasePermission
 
 class IsParticipantOfConversation(BasePermission):
     """
-    Custom permission to ensure:
-    - User is authenticated
-    - User is a participant of the conversation to view, send,
-      update, or delete messages
+    Custom permission:
+    - User must be authenticated
+    - Only participants of a conversation can view, send, update, or delete messages
     """
 
     def has_permission(self, request, view):
-        # Ensure user is authenticated
         return request.user and request.user.is_authenticated
 
     def has_object_permission(self, request, view, obj):
-        # For message objects → check if user is in the conversation participants
+        # For message objects → check conversation participants
         if hasattr(obj, "conversation"):
-            return request.user in obj.conversation.participants.all()
+            participants = obj.conversation.participants.all()
+            if request.method in ["PUT", "PATCH", "DELETE"]:
+                return request.user in participants
+            return request.user in participants
 
-        # For conversation objects → check if user is a participant
+        # For conversation objects → check participants
         if hasattr(obj, "participants"):
+            if request.method in ["PUT", "PATCH", "DELETE"]:
+                return request.user in obj.participants.all()
             return request.user in obj.participants.all()
 
         return False
