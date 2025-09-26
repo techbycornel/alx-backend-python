@@ -1,31 +1,24 @@
-from rest_framework import viewsets, filters
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
 from .models import Conversation, Message
 from .serializers import ConversationSerializer, MessageSerializer
-
+from .permissions import IsParticipantOfConversation
 
 class ConversationViewSet(viewsets.ModelViewSet):
-    queryset = Conversation.objects.all()
     serializer_class = ConversationSerializer
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['title']
+    queryset = Conversation.objects.all()
+    permission_classes = [IsAuthenticated, IsParticipantOfConversation]
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            self.perform_create(serializer)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def get_queryset(self):
+        # Only return conversations the user participates in
+        return Conversation.objects.filter(participants=self.request.user)
 
 
 class MessageViewSet(viewsets.ModelViewSet):
-    queryset = Message.objects.all()
     serializer_class = MessageSerializer
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['content']
+    queryset = Message.objects.all()
+    permission_classes = [IsAuthenticated, IsParticipantOfConversation]
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            self.perform_create(serializer)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def get_queryset(self):
+        # Only return messages from conversations user is part of
+        return Message.objects.filter(conversation__participants=self.request.user)
