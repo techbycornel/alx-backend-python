@@ -1,0 +1,67 @@
+import logging
+from datetime import datetime, time
+from django.http import HttpResponseForbidden
+from django.utils.deprecation import MiddlewareMixin
+
+# Set up logging
+logger = logging.getLogger(__name__)
+logging.basicConfig(filename='requests.log', level=logging.INFO)
+
+
+class RequestLoggingMiddleware(MiddlewareMixin):
+    """Logs every request with timestamp, user, and path."""
+
+    def process_request(self, request):
+        user = request.user if request.user.is_authenticated else "Anonymous"
+        log_msg = f"{datetime.now()} - User: {user} - Path: {request.path}"
+        logger.info(log_msg)
+        print(log_msg)  # optional: print to console
+
+
+class RestrictAccessByTimeMiddleware(MiddlewareMixin):
+    """Restricts access to chats between 9PM and 6AM."""
+
+    def process_request(self, request):
+        current_time = datetime.now().time()
+        if current_time >= time(21, 0) or current_time <= time(6, 0):
+            return HttpResponseForbidden("Chat access restricted at this time.")
+
+
+class OffensiveLanguageMiddleware(MiddlewareMixin):
+    """
+    Limits number of chat messages from an IP address.
+    Example: max 5 messages per minute.
+    """
+
+    ip_message_counts = {}
+
+    def process_request(self, request):
+        if request.method == "POST" and "messages" in request.path:
+            ip = self.get_client_ip(request)
+            now = datetime.now()
+            window = self.ip_message_counts.get(ip, [])
+            # Remove timestamps older than 1 minute
+            window = [t for t in window if (now - t).seconds < 60]
+            if len(window) >= 5:
+                return HttpResponseForbidden("Message limit exceeded. Try again later.")
+            window.append(now)
+            self.ip_message_counts[ip] = window
+
+    def get_client_ip(self, request):
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        return ip
+
+
+class RolePermissionMiddleware(MiddlewareMixin):
+    """Allows access only to admins/moderators."""
+
+    def process_request(self, request):
+        if request.user.is_authenticated:
+            if not getattr(request.user, 'is_staff', False):
+                return HttpResponseForbidden("You do not have permission to perform this action.")
+        else:
+            return HttpResponseForbidden("Authentication required.")
