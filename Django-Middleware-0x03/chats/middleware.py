@@ -62,12 +62,19 @@ class OffensiveLanguageMiddleware(MiddlewareMixin):
         return ip
 
 
-class RolePermissionMiddleware(MiddlewareMixin):
-    """Allows access only to admins/moderators."""
+class RolepermissionMiddleware:
+    """Middleware to enforce role-based access control."""
 
-    def process_request(self, request):
-        if request.user.is_authenticated:
-            if not getattr(request.user, 'is_staff', False):
-                return HttpResponseForbidden("You do not have permission to perform this action.")
-        else:
-            return HttpResponseForbidden("Authentication required.")
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        # Example role check: requires 'admin' or 'moderator'
+        user = getattr(request, "user", None)
+
+        if user and user.is_authenticated:
+            role = getattr(user, "role", None)  # assumes your User model has a 'role' field
+            if role not in ["admin", "moderator"]:
+                return JsonResponse({"error": "Forbidden: insufficient role"}, status=403)
+
+        return self.get_response(request)
