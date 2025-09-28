@@ -8,15 +8,21 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(filename='requests.log', level=logging.INFO)
 
 
-class RequestLoggingMiddleware(MiddlewareMixin):
+class RequestLoggingMiddleware:
     """Logs every request with timestamp, user, and path."""
 
-    def process_request(self, request):
-        user = request.user if request.user.is_authenticated else "Anonymous"
-        log_msg = f"{datetime.now()} - User: {user} - Path: {request.path}"
-        logger.info(log_msg)
-        print(log_msg)  # optional: print to console
+    def __init__(self, get_response):
+        self.get_response = get_response
 
+    def __call__(self, request):
+        user = request.user if hasattr(request, "user") and request.user.is_authenticated else "Anonymous"
+        log_msg = f"{datetime.datetime.now()} - User: {user} - Path: {request.path}\n"
+
+        with open("requests.log", "a") as f:
+            f.write(log_msg)
+
+        response = self.get_response(request)
+        return response
 
 class RestrictAccessByTimeMiddleware(MiddlewareMixin):
     """Restricts access to chats between 9PM and 6AM."""
