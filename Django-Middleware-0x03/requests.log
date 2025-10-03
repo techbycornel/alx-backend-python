@@ -2,3 +2,103 @@ INFO:django.utils.autoreload:C:\Users\OAIKHIENAN CORNELIUS\Desktop\Projects\ALX\
 INFO:django.utils.autoreload:C:\Users\OAIKHIENAN CORNELIUS\Desktop\Projects\ALX\Backend\alx-backend-python\Django-Middleware-0x03\chats\middleware.py changed, reloading.
 INFO:django.utils.autoreload:C:\Users\OAIKHIENAN CORNELIUS\Desktop\Projects\ALX\Backend\alx-backend-python\Django-Middleware-0x03\chats\middleware.py changed, reloading.
 INFO:django.utils.autoreload:C:\Users\OAIKHIENAN CORNELIUS\Desktop\Projects\ALX\Backend\alx-backend-python\Django-Middleware-0x03\messaging_app\settings.py changed, reloading.
+ERROR:django.request:Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\OAIKHIENAN CORNELIUS\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\OAIKHIENAN CORNELIUS\Desktop\Projects\ALX\Backend\alx-backend-python\Django-Middleware-0x03\chats\middleware.py", line 19, in __call__
+    log_msg = f"{datetime.datetime.now()} - User: {user} - Path: {request.path}\n"
+AttributeError: type object 'datetime.datetime' has no attribute 'datetime'
+ERROR:django.request:Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "C:\Users\OAIKHIENAN CORNELIUS\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\OAIKHIENAN CORNELIUS\Desktop\Projects\ALX\Backend\alx-backend-python\Django-Middleware-0x03\chats\middleware.py", line 19, in __call__
+    log_msg = f"{datetime.datetime.now()} - User: {user} - Path: {request.path}\n"
+AttributeError: type object 'datetime.datetime' has no attribute 'datetime'
+ERROR:django.request:Internal Server Error: /admin
+Traceback (most recent call last):
+  File "C:\Users\OAIKHIENAN CORNELIUS\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\OAIKHIENAN CORNELIUS\Desktop\Projects\ALX\Backend\alx-backend-python\Django-Middleware-0x03\chats\middleware.py", line 19, in __call__
+    log_msg = f"{datetime.datetime.now()} - User: {user} - Path: {request.path}\n"
+AttributeError: type object 'datetime.datetime' has no attribute 'datetime'
+ERROR:django.request:Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "C:\Users\OAIKHIENAN CORNELIUS\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\OAIKHIENAN CORNELIUS\Desktop\Projects\ALX\Backend\alx-backend-python\Django-Middleware-0x03\chats\middleware.py", line 19, in __call__
+    log_msg = f"{datetime.datetime.now()} - User: {user} - Path: {request.path}\n"
+AttributeError: type object 'datetime.datetime' has no attribute 'datetime'
+ERROR:django.request:Internal Server Error: /admin/login/
+Traceback (most recent call last):
+  File "C:\Users\OAIKHIENAN CORNELIUS\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\OAIKHIENAN CORNELIUS\Desktop\Projects\ALX\Backend\alx-backend-python\Django-Middleware-0x03\chats\middleware.py", line 19, in __call__
+    log_msg = f"{datetime.datetime.now()} - User: {user} - Path: {request.path}\n"
+AttributeError: type object 'datetime.datetime' has no attribute 'datetime'
+ERROR:django.request:Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "C:\Users\OAIKHIENAN CORNELIUS\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\OAIKHIENAN CORNELIUS\Desktop\Projects\ALX\Backend\alx-backend-python\Django-Middleware-0x03\chats\middleware.py", line 19, in __call__
+    log_msg = f"{datetime.datetime.now()} - User: {user} - Path: {request.path}\n"
+AttributeError: type object 'datetime.datetime' has no attribute 'datetime'
+ERROR:django.request:Internal Server Error: /admin/
+Traceback (most recent call last):
+  File "C:\Users\OAIKHIENAN CORNELIUS\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\OAIKHIENAN CORNELIUS\Desktop\Projects\ALX\Backend\alx-backend-python\Django-Middleware-0x03\chats\middleware.py", line 19, in __call__
+    log_msg = f"{datetime.datetime.now()} - User: {user} - Path: {request.path}\n"
+AttributeError: type object 'datetime.datetime' has no attribute 'datetime'
+ERROR:django.request:Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "C:\Users\OAIKHIENAN CORNELIUS\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\OAIKHIENAN CORNELIUS\Desktop\Projects\ALX\Backend\alx-backend-python\Django-Middleware-0x03\chats\middleware.py", line 19, in __call__
+    log_msg = f"{datetime.datetime.now()} - User: {user} - Path: {request.path}\n"
+AttributeError: type object 'datetime.datetime' has no attribute 'datetime'
+ERROR:django.request:Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\OAIKHIENAN CORNELIUS\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\OAIKHIENAN CORNELIUS\Desktop\Projects\ALX\Backend\alx-backend-python\Django-Middleware-0x03\chats\middleware.py", line 19, in __call__
+    log_msg = f"{datetime.datetime.now()} - User: {user} - Path: {request.path}\n"
+AttributeError: type object 'datetime.datetime' has no attribute 'datetime'
+ERROR:django.request:Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "C:\Users\OAIKHIENAN CORNELIUS\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\OAIKHIENAN CORNELIUS\Desktop\Projects\ALX\Backend\alx-backend-python\Django-Middleware-0x03\chats\middleware.py", line 19, in __call__
+    log_msg = f"{datetime.datetime.now()} - User: {user} - Path: {request.path}\n"
+AttributeError: type object 'datetime.datetime' has no attribute 'datetime'
+ERROR:django.request:Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\OAIKHIENAN CORNELIUS\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\OAIKHIENAN CORNELIUS\Desktop\Projects\ALX\Backend\alx-backend-python\Django-Middleware-0x03\chats\middleware.py", line 19, in __call__
+    log_msg = f"{datetime.datetime.now()} - User: {user} - Path: {request.path}\n"
+AttributeError: type object 'datetime.datetime' has no attribute 'datetime'
+ERROR:django.request:Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "C:\Users\OAIKHIENAN CORNELIUS\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\OAIKHIENAN CORNELIUS\Desktop\Projects\ALX\Backend\alx-backend-python\Django-Middleware-0x03\chats\middleware.py", line 19, in __call__
+    log_msg = f"{datetime.datetime.now()} - User: {user} - Path: {request.path}\n"
+AttributeError: type object 'datetime.datetime' has no attribute 'datetime'
+INFO:django.utils.autoreload:C:\Users\OAIKHIENAN CORNELIUS\Desktop\Projects\ALX\Backend\alx-backend-python\Django-Middleware-0x03\chats\middleware.py changed, reloading.
+INFO:django.utils.autoreload:C:\Users\OAIKHIENAN CORNELIUS\Desktop\Projects\ALX\Backend\alx-backend-python\Django-Middleware-0x03\chats\middleware.py changed, reloading.
+ERROR:django.request:Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\OAIKHIENAN CORNELIUS\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\OAIKHIENAN CORNELIUS\Desktop\Projects\ALX\Backend\alx-backend-python\Django-Middleware-0x03\chats\middleware.py", line 19, in __call__
+    log_msg = f"{datetime.datetime.now()} - User: {user} - Path: {request.path}\n"
+AttributeError: type object 'datetime.datetime' has no attribute 'datetime'
+ERROR:django.request:Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "C:\Users\OAIKHIENAN CORNELIUS\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\OAIKHIENAN CORNELIUS\Desktop\Projects\ALX\Backend\alx-backend-python\Django-Middleware-0x03\chats\middleware.py", line 19, in __call__
+    log_msg = f"{datetime.datetime.now()} - User: {user} - Path: {request.path}\n"
+AttributeError: type object 'datetime.datetime' has no attribute 'datetime'

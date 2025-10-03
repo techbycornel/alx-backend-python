@@ -28,7 +28,7 @@ class RestrictAccessByTimeMiddleware(MiddlewareMixin):
     """Restricts access to chats between 9PM and 6AM."""
 
     def process_request(self, request):
-        current_time = datetime.now().time()
+        current_time = datetime.datetime.now().time()
         if current_time >= time(21, 0) or current_time <= time(6, 0):
             return HttpResponseForbidden("Chat access restricted at this time.")
 
@@ -44,7 +44,7 @@ class OffensiveLanguageMiddleware(MiddlewareMixin):
     def process_request(self, request):
         if request.method == "POST" and "messages" in request.path:
             ip = self.get_client_ip(request)
-            now = datetime.now()
+            now = datetime.datetime.now()
             window = self.ip_message_counts.get(ip, [])
             # Remove timestamps older than 1 minute
             window = [t for t in window if (now - t).seconds < 60]
