@@ -1,4 +1,5 @@
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save, pre_save, post_delete
+from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.utils import timezone
 from .models import Message, Notification, MessageHistory
@@ -32,3 +33,16 @@ def log_message_edit(sender, instance, **kwargs):
             # Mark message as edited
             instance.edited = True
             instance.edited_at = timezone.now()
+
+@receiver(post_delete, sender=User)
+def delete_user_related_data(sender, instance, **kwargs):
+    """Task 2: Clean up related data when a user is deleted"""
+    # Delete messages where user is sender or receiver
+    Message.objects.filter(sender=instance).delete()
+    Message.objects.filter(receiver=instance).delete()
+
+    # Delete notifications for this user
+    Notification.objects.filter(user=instance).delete()
+
+    # Delete message histories associated with this user
+    MessageHistory.objects.filter(edited_by=instance).delete()
