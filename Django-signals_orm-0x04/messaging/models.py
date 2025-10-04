@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from .managers import UnreadMessagesManager
 
 
 class Message(models.Model):
@@ -8,12 +9,28 @@ class Message(models.Model):
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
-    # New fields for Task 1
-    edited = models.BooleanField(default=False)  # track if a message has been edited
-    edited_at = models.DateTimeField(null=True, blank=True)  # when the edit happened
+    # Task 1: track edits
+    edited = models.BooleanField(default=False)
+    edited_at = models.DateTimeField(null=True, blank=True)
     edited_by = models.ForeignKey(
         User, related_name="edited_messages", null=True, blank=True, on_delete=models.SET_NULL
     )
+
+    # Task 3: threaded conversations (parent message)
+    parent_message = models.ForeignKey(
+        "self",
+        null=True,
+        blank=True,
+        related_name="replies",
+        on_delete=models.CASCADE
+    )
+
+    # Task 4: read/unread tracking
+    read = models.BooleanField(default=False)
+
+    # Managers
+    objects = models.Manager()        # default manager
+    unread = UnreadMessagesManager()  # custom manager
 
     def __str__(self):
         return f"From {self.sender} to {self.receiver}: {self.content[:20]}"
@@ -40,26 +57,3 @@ class MessageHistory(models.Model):
 
     def __str__(self):
         return f"History of Message {self.message.id} edited at {self.edited_at}"
-
-class Message(models.Model):
-    sender = models.ForeignKey(User, related_name="sent_messages", on_delete=models.CASCADE)
-    receiver = models.ForeignKey(User, related_name="received_messages", on_delete=models.CASCADE)
-    content = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
-
-    edited = models.BooleanField(default=False)
-    edited_at = models.DateTimeField(null=True, blank=True)
-    edited_by = models.ForeignKey(
-        User, related_name="edited_messages", null=True, blank=True, on_delete=models.SET_NULL
-    )
-
-    parent_message = models.ForeignKey(
-        "self",
-        null=True,
-        blank=True,
-        related_name="replies",
-        on_delete=models.CASCADE
-    )
-
-    def __str__(self):
-        return f"From {self.sender} to {self.receiver}: {self.content[:20]}"

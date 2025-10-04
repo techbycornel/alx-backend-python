@@ -33,3 +33,10 @@ def message_thread_view(request, message_id):
     )
     thread = get_message_thread(message)
     return render(request, "messaging/thread.html", {"thread": thread})
+
+
+@login_required
+def unread_inbox(request):
+    """Display unread messages for the logged-in user"""
+    unread_messages = Message.unread.unread_for_user(request.user)
+    return render(request, "messaging/unread_inbox.html", {"messages": unread_messages})
