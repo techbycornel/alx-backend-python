@@ -1,9 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Message
 from django.contrib.auth import logout, get_user_model
+from django.views.decorators.cache import cache_page   # ✅ import cache_page
+from .models import Message
 
 
+@cache_page(60)  # ✅ cache this view for 60 seconds
 @login_required
 def conversation_view(request, user_id):
     """Optimized view to fetch conversation between current user and another user"""
@@ -15,6 +17,7 @@ def conversation_view(request, user_id):
         .order_by("timestamp")
     )
     return render(request, "messaging/conversation.html", {"messages": messages})
+
 
 def get_message_thread(message):
     """Recursive helper to fetch threaded replies"""
@@ -41,6 +44,7 @@ def unread_inbox(request):
     """Display unread messages for the logged-in user"""
     unread_messages = Message.unread.unread_for_user(request.user)
     return render(request, "messaging/unread_inbox.html", {"messages": unread_messages})
+
 
 @login_required
 def delete_user(request):
