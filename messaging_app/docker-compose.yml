@@ -24,7 +24,7 @@ services:
       - db
     environment:
       MYSQL_DATABASE: messaging_app_db
-      MYSQL_USER: user
+      MYSQL_DB: user
       MYSQL_PASSWORD: password
       MYSQL_HOST: db
 
