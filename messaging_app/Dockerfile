@@ -1,18 +1,20 @@
-# Use an official Python image
+# Use the official Python image
 FROM python:3.10-slim
 
 # Set work directory
 WORKDIR /app
 
-# Install dependencies
+# Copy dependencies
 COPY requirements.txt .
+
+# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy project files
 COPY . .
 
-# Expose port 8000
+# Expose Django's default port
 EXPOSE 8000
 
-# Run Django development server
-CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+# Run Django app and include the '-p' flag as required
+CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000", "-p", "8000"]
