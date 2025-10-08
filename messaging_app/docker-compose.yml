@@ -1,29 +1,28 @@
-version: '3.8'
-
 services:
   db:
-    image: mysql:8.0
-    restart: always
+    image: mysql:8
+    container_name: messaging_app-db
     environment:
-      MYSQL_DATABASE: ${MYSQL_DB}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: messaging_app_db
     volumes:
       - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
 
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    container_name: messaging_app-web
+    command: >
+      sh -c "sleep 10 &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
     ports:
       - "8000:8000"
     depends_on:
       - db
-    environment:
-      MYSQL_DB: ${MYSQL_DB}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_HOST: db
 
 volumes:
   db_data:
