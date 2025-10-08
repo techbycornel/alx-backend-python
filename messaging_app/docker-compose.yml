@@ -3,10 +3,10 @@ services:
     image: mysql:8
     container_name: messaging_app-db
     environment:
-      MYSQL_DATABASE: messaging_app_db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
       - "3306:3306"
     volumes:
@@ -23,10 +23,11 @@ services:
     depends_on:
       - db
     environment:
-      MYSQL_DATABASE: messaging_app_db
-      MYSQL_DB: user
-      MYSQL_PASSWORD: password
-      MYSQL_HOST: db
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_PORT: ${MYSQL_PORT}
 
 volumes:
   db_data:
