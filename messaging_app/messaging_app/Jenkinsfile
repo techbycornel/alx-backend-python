@@ -4,8 +4,10 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Pull the latest code from GitHub
-                checkout scm
+                echo 'Cloning repository from GitHub...'
+                git branch: 'main', 
+                    credentialsId: 'github-credentials', 
+                    url: 'git@github.com:authcornelius/alx-backend-python.git'
             }
         }
 
@@ -16,7 +18,7 @@ pipeline {
                     python3 -m venv venv
                     source venv/bin/activate
                     pip3 install --upgrade pip
-                    pip3 install -r requirements.txt
+                    pip3 install -r messaging_app/requirements.txt
                 '''
             }
         }
@@ -26,13 +28,14 @@ pipeline {
                 echo 'Running pytest...'
                 sh '''
                     source venv/bin/activate
-                    pytest --maxfail=1 --disable-warnings -q --junitxml=report.xml
+                    pytest messaging_app/tests --maxfail=1 --disable-warnings -q --junitxml=report.xml
                 '''
             }
         }
 
-        stage('Test Report') {
+        stage('Publish Test Report') {
             steps {
+                echo 'Publishing test results...'
                 junit 'report.xml'
             }
         }
@@ -40,7 +43,7 @@ pipeline {
 
     post {
         always {
-            echo 'Cleaning up workspace...'
+            echo 'Cleaning workspace...'
             cleanWs()
         }
     }
